@@ -103,12 +103,28 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
+// Обработка параметра event=id в URL (для прямых ссылок)
 function handleEventIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('event');
     if (eventId) {
-        const event = events.find(e => e.id == eventId);
-        if (event) setTimeout(() => showEventDetails(event), 100);
+        // Ждём загрузки событий и рендера календаря
+        const checkEvents = setInterval(() => {
+            if (events.length > 0) {
+                clearInterval(checkEvents);
+                const event = events.find(e => e.id == eventId);
+                if (event) {
+                    // Небольшая задержка для полного рендера
+                    setTimeout(() => showEventDetails(event), 300);
+                } else {
+                    console.log('Событие не найдено:', eventId);
+                }
+            }
+        }, 100);
+        
+        // Очищаем параметр из URL в адресной строке (опционально)
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
     }
 }
 
