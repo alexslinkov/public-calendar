@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь событий</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calendar-header">
+            <button id="prevMonthBtn" class="nav-btn">◀</button>
+            <h1 id="monthYearTitle">Май 2026</h1>
+            <button id="nextMonthBtn" class="nav-btn">▶</button>
+        </div>
+        
+        <!-- Здесь будет календарь -->
+        <div id="calendar"></div>
+        
+        <!-- Модальное окно для деталей события -->
+        <div id="eventModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="eventTitle"></h2>
+                <p><strong>📅 Дата:</strong> <span id="eventDate"></span></p>
+                <p><strong>📍 Место:</strong> <span id="eventLocation"></span></p>
+                <p><strong>📞 Контакты:</strong> <span id="eventContacts"></span></p>
+                <p><strong>🔗 Регистрация:</strong> <a href="#" id="eventLink" target="_blank">Перейти</a></p>
+                
+                <!-- НОВЫЕ КНОПКИ -->
+                <div class="event-actions">
+                    <button id="downloadIcsBtn" class="action-btn">📅 Скачать для календаря (.ics)</button>
+                    <button id="shareEventBtn" class="action-btn share-btn">🔗 Поделиться событием</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

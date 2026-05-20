@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка - Календарь событий</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .admin-container h1 {
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .delete-btn {
+            background: #f44336;
+        }
+        .delete-btn:hover {
+            background: #da190b;
+        }
+        .events-list {
+            margin-top: 40px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .event-item {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .event-info {
+            flex: 1;
+        }
+        .event-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .event-date {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .small-delete {
+            background: #f44336;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .nav-links {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .nav-links a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>🔐 Админ-панель</h1>
+        <div class="subtitle">Добавление и управление событиями</div>
+        
+        <div id="successMsg" class="success">✅ Событие сохранено!</div>
+        
+        <form id="eventForm">
+            <div class="form-group">
+                <label>Название события *</label>
+                <input type="text" id="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Дата *</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Место проведения</label>
+                <input type="text" id="location" placeholder="Онлайн или адрес">
+            </div>
+            
+            <div class="form-group">
+                <label>Контакты организатора</label>
+                <input type="text" id="contacts" placeholder="Email или телефон">
+            </div>
+            
+            <div class="form-group">
+                <label>Ссылка на регистрацию</label>
+                <input type="url" id="link" placeholder="https://... (необязательно)">
+            </div>
+            
+            <button type="submit">➕ Добавить событие</button>
+            <button type="button" onclick="clearForm()">Очистить форму</button>
+        </form>
+        
+        <div class="events-list">
+            <h3>📋 Список событий</h3>
+            <div id="eventsList"></div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html" target="_blank">📅 Открыть публичный календарь</a>
+            <a href="#" onclick="exportToFile()">💾 Экспорт в файл (бэкап)</a>
+            <a href="#" onclick="importFromFile()">📂 Импорт из файла</a>
+        </div>
+    </div>
+    
+    <script src="admin.js"></script>
+</body>
+</html>
