@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: #f5f5f5;
     padding: 20px;
 }
@@ -25,6 +25,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .nav-btn {
@@ -43,11 +45,17 @@ body {
     transform: scale(1.05);
 }
 
-/* Календарь */
+#monthYearTitle {
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+/* Календарь - фиксированная сетка */
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
+    overflow-x: auto;
 }
 
 .calendar-day {
@@ -99,7 +107,7 @@ body {
     background: #e8f5e9;
 }
 
-/* Карточка события с картинкой */
+/* Карточка события */
 .event {
     background: white;
     border-left: 4px solid #4CAF50;
@@ -136,27 +144,30 @@ body {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
+    overflow-y: auto;
 }
 
 .modal-content {
     background: white;
-    margin: 5% auto;
+    margin: 10% auto;
     padding: 20px;
     width: 90%;
     max-width: 500px;
     border-radius: 10px;
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close {
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 10px;
     font-size: 28px;
     cursor: pointer;
@@ -220,6 +231,7 @@ body {
     border-radius: 8px;
     z-index: 2000;
     animation: fadeInOut 2s ease;
+    font-size: 14px;
 }
 
 @keyframes fadeInOut {
@@ -228,10 +240,120 @@ body {
     85% { opacity: 1; transform: translateX(-50%) translateY(0); }
     100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
-.edit-btn {
-    background: #2196F3;
+
+/* ========== АДАПТИВ ДЛЯ ТЕЛЕФОНОВ ========== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    /* Уменьшаем отступы, но НЕ меняем высоту клеток */
+    .calendar-day {
+        padding: 8px;
+        min-height: 100px; /* Оставляем как было */
+    }
+    
+    .day-number {
+        font-size: 11px;
+    }
+    
+    /* Шрифты событий остаются читаемыми */
+    .event {
+        font-size: 10px;
+        padding: 4px;
+    }
+    
+    .event-thumb {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .nav-btn {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+    
+    #monthYearTitle {
+        font-size: 1.2rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 15% auto;
+        padding: 15px;
+    }
+    
+    .action-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .toast-notification {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
 }
 
-.edit-btn:hover {
-    background: #0b7dda;
+/* Для маленьких экранов — добавляем горизонтальную прокрутку */
+@media (max-width: 550px) {
+    .container {
+        overflow-x: auto;
+    }
+    
+    #calendar {
+        min-width: 550px;
+    }
+    
+    /* Заголовки дней недели не сжимаем */
+    .calendar-day {
+        min-width: 70px;
+    }
+}
+
+/* Админка на телефонах */
+@media (max-width: 768px) {
+    .admin-container {
+        padding: 15px;
+    }
+    
+    .admin-container h1 {
+        font-size: 1.3rem;
+    }
+    
+    button {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .event-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .small-delete, .edit-btn {
+        width: auto;
+        margin-right: 5px;
+    }
+    
+    .event-item div:last-child {
+        display: flex;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .nav-links a {
+        display: block;
+        margin: 10px 0;
+    }
+    
+    input, textarea {
+        font-size: 16px;
+    }
 }
