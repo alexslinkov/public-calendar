@@ -21,7 +21,7 @@ function loadEvents() {
                 location: "Онлайн (Zoom)",
                 contacts: "info@company.com",
                 link: "https://example.com/register/1",
-                imageUrl: ""
+                imageData: null
             },
             {
                 id: Date.now() + 1,
@@ -30,12 +30,15 @@ function loadEvents() {
                 location: "Москва, Крокус Экспо",
                 contacts: "+7 999 123-45-67",
                 link: "https://example.com/register/2",
-                imageUrl: ""
+                imageData: null
             }
         ];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
     }
     renderCalendar();
+    
+    // После загрузки событий проверяем URL
+    handleEventIdFromURL();
 }
 
 // Генерация .ics файла
@@ -103,26 +106,22 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// Обработка параметра event=id в URL (для прямых ссылок)
+// Обработка параметра event=id в URL
 function handleEventIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('event');
-    if (eventId) {
-        // Ждём загрузки событий и рендера календаря
-        const checkEvents = setInterval(() => {
-            if (events.length > 0) {
-                clearInterval(checkEvents);
-                const event = events.find(e => e.id == eventId);
-                if (event) {
-                    // Небольшая задержка для полного рендера
-                    setTimeout(() => showEventDetails(event), 300);
-                } else {
-                    console.log('Событие не найдено:', eventId);
-                }
-            }
-        }, 100);
+    
+    if (eventId && events.length > 0) {
+        const event = events.find(e => e.id == eventId);
+        if (event) {
+            // Небольшая задержка для полного рендера календаря
+            setTimeout(() => showEventDetails(event), 500);
+        } else {
+            console.log('Событие не найдено:', eventId);
+            showToast('❌ Событие не найдено');
+        }
         
-        // Очищаем параметр из URL в адресной строке (опционально)
+        // Убираем параметр из URL, чтобы не мешал
         const newUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, '', newUrl);
     }
@@ -288,7 +287,6 @@ if (shareBtn) shareBtn.onclick = () => currentEvent && shareEvent(currentEvent);
 
 // Запуск
 loadEvents();
-handleEventIdFromURL();
 
 // Слушаем изменения в localStorage
 window.addEventListener('storage', (e) => {
