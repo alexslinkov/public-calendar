@@ -14,23 +14,10 @@
             padding: 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .admin-container h1 {
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
+        .admin-container h1 { margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
         input, textarea {
             width: 100%;
             padding: 10px;
@@ -52,15 +39,9 @@
             font-size: 16px;
             margin-right: 10px;
         }
-        button:hover {
-            background: #45a049;
-        }
-        .delete-btn {
-            background: #f44336;
-        }
-        .delete-btn:hover {
-            background: #da190b;
-        }
+        button:hover { background: #45a049; }
+        .delete-btn { background: #f44336; }
+        .delete-btn:hover { background: #da190b; }
         .events-list {
             margin-top: 40px;
             border-top: 2px solid #eee;
@@ -75,32 +56,12 @@
             justify-content: space-between;
             align-items: center;
         }
-        .event-info {
-            flex: 1;
-        }
-        .event-title {
-            font-weight: bold;
-            color: #333;
-        }
-        .event-date {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .small-delete {
-            background: #f44336;
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-        .nav-links {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .nav-links a {
-            color: #4CAF50;
-            text-decoration: none;
-            margin: 0 10px;
-        }
+        .event-info { flex: 1; }
+        .event-title { font-weight: bold; color: #333; }
+        .event-date { font-size: 12px; color: #666; margin-top: 5px; }
+        .small-delete { background: #f44336; padding: 5px 10px; font-size: 12px; }
+        .nav-links { text-align: center; margin-top: 30px; }
+        .nav-links a { color: #4CAF50; text-decoration: none; margin: 0 10px; }
         .success {
             background: #d4edda;
             color: #155724;
@@ -144,6 +105,16 @@
                 <input type="url" id="link" placeholder="https://... (необязательно)">
             </div>
             
+            <div class="form-group">
+                <label>🖼️ Картинка мероприятия</label>
+                <input type="file" id="imageFile" accept="image/jpeg,image/png,image/gif">
+                <div id="imagePreview" style="margin-top: 10px; display: none;">
+                    <img id="previewImg" style="max-width: 100%; max-height: 150px; border-radius: 5px;">
+                    <p style="font-size: 12px; color: #666;">✅ Картинка добавлена</p>
+                </div>
+                <small style="color:#999;">Поддерживаются JPG, PNG, GIF (максимум 1 МБ)</small>
+            </div>
+            
             <button type="submit">➕ Добавить событие</button>
             <button type="button" onclick="clearForm()">Очистить форму</button>
         </form>
@@ -161,5 +132,44 @@
     </div>
     
     <script src="admin.js"></script>
+    <!-- Модальное окно для редактирования -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close-edit">&times;</span>
+        <h2>✏️ Редактировать событие</h2>
+        <form id="editForm">
+            <div class="form-group">
+                <label>Название события *</label>
+                <input type="text" id="editTitle" required>
+            </div>
+            <div class="form-group">
+                <label>Дата *</label>
+                <input type="date" id="editDate" required>
+            </div>
+            <div class="form-group">
+                <label>Место проведения</label>
+                <input type="text" id="editLocation">
+            </div>
+            <div class="form-group">
+                <label>Контакты организатора</label>
+                <input type="text" id="editContacts">
+            </div>
+            <div class="form-group">
+                <label>Ссылка на регистрацию</label>
+                <input type="url" id="editLink">
+            </div>
+            <div class="form-group">
+                <label>🖼️ Картинка мероприятия</label>
+                <input type="file" id="editImageFile" accept="image/jpeg,image/png,image/gif">
+                <div id="editImagePreview" style="margin-top: 10px; display: none;">
+                    <img id="editPreviewImg" style="max-width: 100%; max-height: 150px; border-radius: 5px;">
+                    <p style="font-size: 12px; color: #666;">Текущая картинка</p>
+                </div>
+            </div>
+            <button type="submit">💾 Сохранить изменения</button>
+            <button type="button" onclick="closeEditModal()">Отмена</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

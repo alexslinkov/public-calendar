@@ -5,7 +5,6 @@ let events = [];
 let currentDate = new Date();
 currentDate.setMonth(4); // май 2026
 
-// Текущее выбранное событие (для кнопок скачать/поделиться)
 let currentEvent = null;
 
 // Загрузка событий из localStorage
@@ -16,20 +15,22 @@ function loadEvents() {
     } else {
         events = [
             {
-                id: 1,
+                id: Date.now(),
                 title: "Вебинар по маркетингу",
                 date: "2026-05-25",
                 location: "Онлайн (Zoom)",
                 contacts: "info@company.com",
-                link: "https://example.com/register/1"
+                link: "https://example.com/register/1",
+                imageUrl: ""
             },
             {
-                id: 2,
+                id: Date.now() + 1,
                 title: "Конференция стартапов",
                 date: "2026-05-28",
                 location: "Москва, Крокус Экспо",
                 contacts: "+7 999 123-45-67",
-                link: "https://example.com/register/2"
+                link: "https://example.com/register/2",
+                imageUrl: ""
             }
         ];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
@@ -37,16 +38,14 @@ function loadEvents() {
     renderCalendar();
 }
 
-// Функция для генерации .ics файла
+// Генерация .ics файла
 function generateICS(event) {
-    // Форматируем дату для iCalendar (YYYYMMDDTHHMMSSZ)
     const date = new Date(event.date);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const dateStamp = `${year}${month}${day}`;
     
-    // Экранируем спецсимволы
     const escapeICS = (str) => {
         if (!str) return '';
         return str.replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
@@ -56,8 +55,7 @@ function generateICS(event) {
     const location = escapeICS(event.location || 'Не указано');
     const description = `Мероприятие: ${summary}\nМесто: ${location}\nКонтакты: ${event.contacts || 'Нет'}\nРегистрация: ${event.link !== '#' ? event.link : 'Не требуется'}`;
     
-    // Формат iCalendar
-    const icsContent = [
+    return [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
         'PRODID:-//Calendar App//RU',
@@ -72,11 +70,8 @@ function generateICS(event) {
         'END:VEVENT',
         'END:VCALENDAR'
     ].join('\r\n');
-    
-    return icsContent;
 }
 
-// Скачивание .ics файла
 function downloadICS(event) {
     const icsContent = generateICS(event);
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
@@ -88,44 +83,32 @@ function downloadICS(event) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
     showToast('✅ Файл скачан! Импортируйте его в ваш календарь.');
 }
 
-// Поделиться (копирование ссылки)
 function shareEvent(event) {
-    // Создаём уникальную ссылку на событие (на основе ID)
     const shareUrl = `${window.location.origin}${window.location.pathname}?event=${event.id}`;
-    
-    // Копируем в буфер обмена
     navigator.clipboard.writeText(shareUrl).then(() => {
         showToast('🔗 Ссылка на событие скопирована! Отправьте её кому угодно.');
     }).catch(() => {
-        // fallback
         prompt('Скопируйте ссылку вручную:', shareUrl);
     });
 }
 
-// Показать всплывающее уведомление
 function showToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
     toast.textContent = message;
     document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.remove();
-    }, 2000);
+    setTimeout(() => toast.remove(), 2000);
 }
 
-// Обработка параметра event=id в URL (для прямых ссылок)
 function handleEventIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('event');
     if (eventId) {
         const event = events.find(e => e.id == eventId);
-        if (event) {
-            setTimeout(() => showEventDetails(event), 100);
-        }
+        if (event) setTimeout(() => showEventDetails(event), 100);
     }
 }
 
@@ -200,7 +183,20 @@ function renderCalendar() {
         dayEvents.forEach(event => {
             const eventEl = document.createElement('div');
             eventEl.className = 'event';
-            eventEl.textContent = event.title;
+            
+            if (event.imageData && event.imageData !== '') {
+                const img = document.createElement('img');
+                img.src = event.imageData;
+                img.className = 'event-thumb';
+                img.onerror = () => img.style.display = 'none';
+                eventEl.appendChild(img);
+            }
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'event-title';
+            titleSpan.textContent = event.title;
+            eventEl.appendChild(titleSpan);
+            
             eventEl.onclick = (e) => {
                 e.stopPropagation();
                 showEventDetails(event);
@@ -222,13 +218,22 @@ function changeMonth(delta) {
 function showEventDetails(event) {
     currentEvent = event;
     
+    const modalImage = document.getElementById('eventImage');
+    if (modalImage) {
+        if (event.imageData && event.imageData !== '') {
+            modalImage.src = event.imageData;
+            modalImage.style.display = 'block';
+        } else {
+            modalImage.style.display = 'none';
+        }
+    }
+    
     document.getElementById('eventTitle').textContent = event.title;
     document.getElementById('eventDate').textContent = event.date;
     document.getElementById('eventLocation').textContent = event.location;
     document.getElementById('eventContacts').textContent = event.contacts;
     
     const linkElement = document.getElementById('eventLink');
-    
     if (event.link && event.link !== '#' && event.link !== '') {
         linkElement.href = event.link;
         linkElement.textContent = 'Перейти к регистрации';
@@ -246,9 +251,7 @@ function showEventDetails(event) {
 
 // Закрытие модального окна
 const closeBtn = document.querySelector('.close');
-if (closeBtn) {
-    closeBtn.onclick = () => document.getElementById('eventModal').style.display = 'none';
-}
+if (closeBtn) closeBtn.onclick = () => document.getElementById('eventModal').style.display = 'none';
 
 window.onclick = (event) => { 
     if (event.target == document.getElementById('eventModal')) 
@@ -264,20 +267,8 @@ if (nextBtn) nextBtn.onclick = () => changeMonth(1);
 // Кнопки скачивания и шаринга
 const downloadBtn = document.getElementById('downloadIcsBtn');
 const shareBtn = document.getElementById('shareEventBtn');
-
-if (downloadBtn) {
-    downloadBtn.onclick = () => {
-        if (currentEvent) downloadICS(currentEvent);
-        else showToast('Ошибка: событие не выбрано');
-    };
-}
-
-if (shareBtn) {
-    shareBtn.onclick = () => {
-        if (currentEvent) shareEvent(currentEvent);
-        else showToast('Ошибка: событие не выбрано');
-    };
-}
+if (downloadBtn) downloadBtn.onclick = () => currentEvent && downloadICS(currentEvent);
+if (shareBtn) shareBtn.onclick = () => currentEvent && shareEvent(currentEvent);
 
 // Запуск
 loadEvents();
@@ -285,7 +276,5 @@ handleEventIdFromURL();
 
 // Слушаем изменения в localStorage
 window.addEventListener('storage', (e) => {
-    if (e.key === STORAGE_KEY) {
-        loadEvents();
-    }
+    if (e.key === STORAGE_KEY) loadEvents();
 });

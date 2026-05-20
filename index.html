@@ -14,25 +14,23 @@
             <button id="nextMonthBtn" class="nav-btn">▶</button>
         </div>
         
-        <!-- Здесь будет календарь -->
         <div id="calendar"></div>
         
-        <!-- Модальное окно для деталей события -->
+        <!-- Модальное окно -->
         <div id="eventModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
+                <img id="eventImage" class="event-poster" style="display: none;">
                 <h2 id="eventTitle"></h2>
                 <p><strong>📅 Дата:</strong> <span id="eventDate"></span></p>
                 <p><strong>📍 Место:</strong> <span id="eventLocation"></span></p>
                 <p><strong>📞 Контакты:</strong> <span id="eventContacts"></span></p>
                 <p><strong>🔗 Регистрация:</strong> <a href="#" id="eventLink" target="_blank">Перейти</a></p>
                 
-                <!-- НОВЫЕ КНОПКИ -->
                 <div class="event-actions">
                     <button id="downloadIcsBtn" class="action-btn">📅 Скачать для календаря (.ics)</button>
                     <button id="shareEventBtn" class="action-btn share-btn">🔗 Поделиться событием</button>
                 </div>
-            </div>
             </div>
         </div>
     </div>
