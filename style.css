@@ -7,7 +7,7 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: #f5f5f5;
-    padding: 10px;
+    padding: 20px;
 }
 
 .container {
@@ -15,40 +15,39 @@ body {
     margin: 0 auto;
     background: white;
     border-radius: 10px;
-    padding: 12px;
+    padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* Навигация - компактная строка */
+/* Навигация */
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    gap: 8px;
+    margin-bottom: 20px;
+    gap: 10px;
 }
 
 .nav-btn {
     background: #4CAF50;
     color: white;
     border: none;
-    font-size: 18px;
-    padding: 6px 12px;
+    font-size: 20px;
+    padding: 10px 15px;
     cursor: pointer;
     border-radius: 5px;
     transition: 0.3s;
-    min-width: 40px;
 }
 
 .nav-btn:hover {
     background: #45a049;
+    transform: scale(1.05);
 }
 
 #monthYearTitle {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     text-align: center;
     font-weight: 600;
-    margin: 0;
 }
 
 /* Заголовки дней недели */
@@ -61,8 +60,8 @@ body {
 .weekday {
     text-align: center;
     font-weight: bold;
-    font-size: 11px;
-    padding: 5px;
+    font-size: 14px;
+    padding: 10px;
     color: #666;
 }
 
@@ -70,20 +69,21 @@ body {
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 5px;
 }
 
 .calendar-day {
-    border: 1px solid #eee;
-    min-height: 60px;
-    padding: 4px;
+    border: 1px solid #ddd;
+    min-height: 100px;
+    padding: 10px;
     background: white;
     cursor: pointer;
-    transition: 0.1s;
+    transition: 0.3s;
 }
 
 .calendar-day:hover {
     background: #f0f0f0;
+    transform: scale(1.02);
 }
 
 .calendar-day.empty {
@@ -93,25 +93,26 @@ body {
 
 .day-number {
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     color: #666;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 /* Выходные */
 .calendar-day.weekend {
-    background: #fff8e8;
+    background: #fff3e0;
 }
 
 /* Праздники */
 .calendar-day.holiday {
-    background: #ffe8e8;
+    background: #ffe0e0;
+    position: relative;
 }
 
 .calendar-day.holiday .day-number::after {
     content: "🎉";
-    margin-left: 3px;
-    font-size: 9px;
+    margin-left: 5px;
+    font-size: 12px;
 }
 
 /* Текущий день */
@@ -122,39 +123,35 @@ body {
 
 /* Карточка события */
 .event {
-    background: #e3f2fd;
-    border-left: 3px solid #2196F3;
-    padding: 2px 4px;
-    margin-top: 2px;
-    border-radius: 3px;
-    font-size: 9px;
+    background: white;
+    border-left: 4px solid #4CAF50;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
+    font-size: 11px;
     cursor: pointer;
-    transition: 0.1s;
+    transition: 0.2s;
     display: flex;
-    gap: 3px;
+    gap: 5px;
     align-items: center;
-    overflow: hidden;
 }
 
 .event:hover {
-    background: #bbdef5;
+    transform: translateX(2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .event-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
     object-fit: cover;
-    flex-shrink: 0;
+    background: #f0f0f0;
 }
 
 .event-title {
     flex: 1;
     font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 9px;
 }
 
 /* Модальное окно */
@@ -172,23 +169,22 @@ body {
 
 .modal-content {
     background: white;
-    margin: 20% auto;
-    padding: 16px;
+    margin: 10% auto;
+    padding: 20px;
     width: 90%;
-    max-width: 400px;
-    border-radius: 12px;
+    max-width: 500px;
+    border-radius: 10px;
     position: relative;
-    max-height: 80vh;
+    max-height: 90vh;
     overflow-y: auto;
 }
 
 .close {
     position: absolute;
     right: 15px;
-    top: 12px;
-    font-size: 22px;
+    top: 10px;
+    font-size: 28px;
     cursor: pointer;
-    color: #999;
 }
 
 .close:hover {
@@ -198,28 +194,17 @@ body {
 /* Картинка в модальном окне */
 .event-poster {
     width: 100%;
-    max-height: 160px;
+    max-height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 12px;
-}
-
-.modal-content h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-.modal-content p {
-    font-size: 13px;
-    margin-bottom: 8px;
-    line-height: 1.4;
+    margin-bottom: 15px;
 }
 
 /* Кнопки действий */
 .event-actions {
     display: flex;
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 20px;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -228,11 +213,11 @@ body {
     background: #4CAF50;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 10px 15px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
-    transition: 0.2s;
+    font-size: 14px;
+    transition: 0.3s;
 }
 
 .action-btn:hover {
@@ -255,12 +240,11 @@ body {
     transform: translateX(-50%);
     background: #333;
     color: white;
-    padding: 8px 16px;
+    padding: 12px 24px;
     border-radius: 8px;
     z-index: 2000;
     animation: fadeInOut 2s ease;
-    font-size: 12px;
-    white-space: nowrap;
+    font-size: 14px;
 }
 
 @keyframes fadeInOut {
@@ -270,25 +254,25 @@ body {
     100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
 
-/* ========== ТОЛЬКО ДЛЯ ТЕЛЕФОНОВ ========== */
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ (ТОЛЬКО ДЛЯ ТЕЛЕФОНОВ) ========== */
 @media (max-width: 768px) {
     body {
-        padding: 5px;
-    }
-    
-    .container {
         padding: 8px;
     }
     
-    /* Навигация в строку */
+    .container {
+        padding: 10px;
+    }
+    
+    /* Навигация компактно */
     .calendar-header {
         margin-bottom: 10px;
+        gap: 6px;
     }
     
     .nav-btn {
-        font-size: 16px;
-        padding: 4px 10px;
-        min-width: 36px;
+        font-size: 14px;
+        padding: 5px 10px;
     }
     
     #monthYearTitle {
@@ -298,13 +282,17 @@ body {
     /* Заголовки дней недели */
     .weekday {
         font-size: 10px;
-        padding: 4px;
+        padding: 5px;
     }
     
-    /* Клетки календаря компактные */
+    /* Календарь - компактные клетки на телефоне */
+    #calendar {
+        gap: 2px;
+    }
+    
     .calendar-day {
         min-height: 55px;
-        padding: 3px;
+        padding: 4px;
     }
     
     .day-number {
@@ -312,11 +300,12 @@ body {
         margin-bottom: 2px;
     }
     
-    /* События компактно */
+    /* События на телефоне */
     .event {
-        padding: 2px 3px;
+        padding: 2px 4px;
         margin-top: 2px;
         font-size: 8px;
+        border-left-width: 2px;
     }
     
     .event-thumb {
@@ -328,9 +317,9 @@ body {
         font-size: 8px;
     }
     
-    /* Модальное окно ближе к верху */
+    /* Модальное окно */
     .modal-content {
-        margin: 15% auto;
+        margin: 20% auto;
         padding: 12px;
     }
     
@@ -349,29 +338,19 @@ body {
     
     .toast-notification {
         font-size: 11px;
-        white-space: normal;
-        text-align: center;
-        max-width: 85%;
+        padding: 8px 16px;
     }
 }
 
-/* Для очень маленьких телефонов (320px) */
+/* Очень маленькие телефоны */
 @media (max-width: 380px) {
-    .container {
-        padding: 6px;
-    }
-    
     .calendar-day {
         min-height: 50px;
-        padding: 2px;
+        padding: 3px;
     }
     
     .day-number {
         font-size: 9px;
-    }
-    
-    .event {
-        padding: 1px 2px;
     }
     
     .event-title {
@@ -381,14 +360,5 @@ body {
     .event-thumb {
         width: 12px;
         height: 12px;
-    }
-    
-    .nav-btn {
-        font-size: 14px;
-        padding: 3px 8px;
-    }
-    
-    #monthYearTitle {
-        font-size: 0.9rem;
     }
 }
